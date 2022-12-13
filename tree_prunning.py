@@ -30,15 +30,6 @@ def normalize_error_and_unfairness(tree):
     normalize_tree_values(tree, key='R_fair', max_val=float(max_unfair))
 
 
-def add_node_fair_regularization(node, lmbda):
-
-    node['R_node'] = (1. - lmbda) * node['R_node'] + lmbda * node['R_fair']
-
-    if not node['is_terminal']:
-        add_node_fair_regularization(node['left'], lmbda)
-        add_node_fair_regularization(node['right'], lmbda)
-
-
 # %%
 
 def estimate_mis_branch(node):
