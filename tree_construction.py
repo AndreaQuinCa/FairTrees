@@ -91,30 +91,6 @@ def estimate_mis_node(group):
     return R, pred
 
 
-#%%
-
-# Estimate ponderate rule per node: p(dom_{T_t}(x)=1|A=0)/p(dom_{T_t}(x)=1|A=1)
-def estimate_rule_node(group):
-
-    # Calculate prob that a case of group 'A=a' in the tree, falls into t:
-    # N_a(t)/N_a where N_a = total of group 'a' in training.
-
-    # count instances of group a in node: N_a(t)
-    node_sensible_vals = group.sensitive_train[group.sensitive_attrs[0]]
-    node_sensitive_sizes = np.zeros_like(group.aprioris)
-    for group_val, idx_group in group.sensitive_groups_to_idx.items():
-        group_vals = np.zeros_like(node_sensible_vals) + group_val
-        node_group_size = np.sum(node_sensible_vals == group_vals) * 1.0
-        node_sensitive_sizes[idx_group] += node_group_size
-
-    # divide by N_a
-    prob_group_in_node = np.divide(node_sensitive_sizes, group.sensitive_sizes)
-
-    p_min, p_max = prob_group_in_node.min(), prob_group_in_node.max()
-
-    return p_min/p_max
-
-
 # %%
 
 def node_to_terminal(node):
